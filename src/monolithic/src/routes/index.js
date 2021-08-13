@@ -4,25 +4,22 @@ const ReservationController = require('../controller/reservationController');
 
 const router = express.Router();
 
-const multipart = require('connect-multiparty');
-const mdUpload = multipart({ uploadDir: '../upload' });
 
 // rutas panel de administracion
 
 // habitaciones
-router.post('/rooms',  RoomController.save);
-router.post('/rooms-fechas',  RoomController.getRoomsByDates);
+router.post('/rooms',  RoomController.save); //
+router.post('/rooms-fechas',  RoomController.getRoomsByDates);//
 router.get('/rooms',  RoomController.getRooms);
-router.get('/rooms/:id',  RoomController.getRoomById);
-router.put('/rooms/:id',  RoomController.updateRoom);
-router.delete('/rooms/:id',  RoomController.deleteRoom);
+router.get('/rooms/:id',  RoomController.getRoomById);//
+router.put('/rooms/:id',  RoomController.updateRoom);//
+router.delete('/rooms/:id',  RoomController.deleteRoom);//
 
-router.post('/rooms/subir-img', mdUpload,  RoomController.uploadImg);
-router.get('/rooms/img/:filename',  RoomController.getImg);
+router.post('/rooms/subir-img', RoomController.uploadImg);
 
 
 // reservaciones
-router.post('/reservations',  ReservationController.save);
+router.post('/reservations',  ReservationController.save);//
 router.get('/reservations',  ReservationController.getReservations);
 
 

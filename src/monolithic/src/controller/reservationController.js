@@ -74,7 +74,7 @@ const controller = {
 
     // todas reservaciones para admin
     getReservations: function (req, res) {
-        Reservation.find().exec((err, reservations) => {
+        Reservation.find().populate('habitacion').exec((err, reservations) => {
             response.data = reservations;
             return res.send(response);
 

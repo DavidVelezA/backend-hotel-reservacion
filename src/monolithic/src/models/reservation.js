@@ -5,7 +5,7 @@ const ReservationSchema = new Schema(
   {
     // habitacion: { type: Schema.ObjectId, ref: 'Room' },
     usuario: { type: Schema.ObjectId, ref: 'User' },
-    habitacion: { type: String },
+    habitacion: { type: Schema.ObjectId, ref: 'Room' },
     // usuario: { type: String },
     fecha_entrada: { type: String },
     fecha_salida: { type: String },

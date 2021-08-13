@@ -1,6 +1,4 @@
 const Room = require("../models/room");
-const path = require('path');
-const fs = require('fs');
 
 
 const response = {
@@ -13,8 +11,9 @@ const controller = {
 
     save: function (req, res) {
         const params = req.body;
+        console.log('dddddddddd', params);
 
-        if (params.nombre && params.detalle && params.camas && params.banios && params.estado) {
+        if (params.nombre && params.detalle && params.camas && params.banios && params.imagen && params.estado) {
             
             params.fechasReservaciones = [];
             const room = new Room(params);
@@ -37,10 +36,13 @@ const controller = {
         });
     },
     getRoomsByDates: function (req, res) {
+        response.data = [];
         const params = req.body;        
 
-        Room.find({ "fechasReservaciones":params.fecha_entrada}).exec((err, rooms) => {
-        
+        // Room.find({ "fechasReservaciones":params.fecha_entrada}).exec((err, rooms) => {
+        Room.find({ fechasReservaciones: { $ne: params.fecha_entrada } }).exec((err, rooms) => {
+
+            
             response.data = rooms;
             return res.send(response);
 
@@ -116,50 +118,17 @@ const controller = {
     },
 
     uploadImg: function (req, res) {
-        // Configurar el modulo multiparty (md) para habilitar subida de imagenes routes/users.js
-        // Recoger el fichero de la peticion
-        var file_name = 'Avatar no subido';
-        if (!req.files) {
-            response.message = file_name;
-            return res.send(response);
+        const room = new Room();
+        room.imagen =  req.body.imagen;
+        room.save();
+        response.message = 'ok';
+        return res.send(response);
 
-        }
-        let file_path = req.files.file0.path;
-        let file_split = file_path.split('\\'); //mostrar en partes en array
       
-        // Nombre del archivo
-        var file_name = file_split[2];
-        // Extension del archivo
-        let ext_split = file_name.split('.');
-        let file_ext = ext_split[1];
-        // extension
-        if (
-          file_ext != 'png' &&
-          file_ext != 'jpg' &&
-          file_ext != 'jpeg' &&
-          file_ext != 'gif'
-        ) {
-          fs.unlink(file_path, (err) => {
-            response.message = 'La extension del archivo no es valida';
-            return res.send(response);
-          
-          });
-        } 
+       
       },
 
-      getImg: function (req, res) {
-        const fileName = req.params.fileName;
-        const pathFile = '../upload/' + fileName;
     
-        fs.stat(pathFile, (err, stats) => {
-          if (err) {
-              response.message = err
-            return res.send(response);
-
-          }
-          return res.sendFile(path.resolve(pathFile));
-        });
-      },
 
 };
 module.exports = controller;

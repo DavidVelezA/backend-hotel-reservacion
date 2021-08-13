@@ -13,8 +13,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^5.13.3",
-    "moment": "2.29.1",
-    "connect-multiparty": "^2.2.0"
+    "moment": "2.29.1"
 
   }
 }
