@@ -21,6 +21,7 @@ router.post('/rooms/subir-img', RoomController.uploadImg);
 // reservaciones
 router.post('/reservations',  ReservationController.save);//
 router.get('/reservations',  ReservationController.getReservations);
+router.delete('/reservations/:id',  ReservationController.deleteReservations);
 
 
 

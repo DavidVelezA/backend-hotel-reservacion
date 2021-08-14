@@ -74,11 +74,38 @@ const controller = {
 
     // todas reservaciones para admin
     getReservations: function (req, res) {
-        Reservation.find().populate('habitacion').exec((err, reservations) => {
+        Reservation.find().populate('habitacion').populate('usuario').exec((err, reservations) => {
             response.data = reservations;
             return res.send(response);
 
         });
+    },
+
+    deleteReservations: function (req, res) {
+        //sacar el id del topic de la url
+        const id = req.params.id;
+
+        Reservation.findOneAndDelete({ _id: id }, (err, ReservationRemoved) => {
+
+            
+
+            if (err || !ReservationRemoved) {
+                response.fail = true;
+
+            } else {
+                // eliminar la fecha de el array
+                Room.findOne({ _id: ReservationRemoved.habitacion, fechasReservaciones:  ReservationRemoved.fecha_entrada  }).exec((err, room) => {
+
+                 let nuevasFechas = room.fechasReservaciones.filter(fecha => fecha != ReservationRemoved.fecha_entrada);
+                 room.fechasReservaciones = nuevasFechas;
+                 room.save()
+
+                 return res.send(room);
+            });
+
+            }
+        });
+
     },
 
 
