@@ -13,7 +13,7 @@ const controller = {
         const params = req.body;
         console.log('dddddddddd', params);
 
-        if (params.nombre && params.detalle && params.camas && params.banios && params.imagen && params.estado) {
+        if (params.nombre && params.detalle && params.camas && params.banios && params.imagen && params.precio && params.estado) {
             
             params.fechasReservaciones = [];
             const room = new Room(params);
@@ -68,7 +68,7 @@ const controller = {
         const params = req.body;
 
 
-        if (params.nombre && params.detalle && params.camas && params.banios && params.estado) {
+        if (params.nombre && params.detalle && params.camas && params.banios && params.estado && params.imagen) {
 
             //montar un json con los datos modificables
 
@@ -78,6 +78,8 @@ const controller = {
                 camas: params.camas,
                 banios: params.banios,
                 estado: params.estado,
+                imagen: params.imagen,
+
             };
 
             // find and update del topic por id y por id de usuario
@@ -111,6 +113,27 @@ const controller = {
 
             } else {
                 response.data = RoomRemoved;
+            }
+            return res.send(response);
+        });
+
+    },
+
+    deleteImg: function (req, res) {
+        //sacar el id del topic de la url
+        const id = req.params.id;
+        const params = req.body;
+
+        Room.findOne({ _id: id }, (err, room) => {
+
+            if (err || !room) {
+                response.fail = true;
+
+            } else {
+                let imagenesNuevas = room.imagen.filter(img => img != params.link );
+                room.imagen = imagenesNuevas;
+                room.save()
+                response.data = 'Eliminado';
             }
             return res.send(response);
         });

@@ -10,19 +10,31 @@ const response = {
 
 
 const controller = {
-    
+
     register: function (req, res) {
 
-        bcrypt.hash('admin', null, null, (err, hash) => {
-         
-            // guardar usuario           
-            const auth = new Auth({correo: 'admin@admin.com', clave: hash});
-            auth.save();
-            response.data = 'ok';
+        Auth.findOne({ correo: 'admin@admin.com' }, (err, auth) => {
 
+            if (auth) {
+                response.data = 'Usuario administrador ya ha sido creado';
+
+            } else {
+
+                bcrypt.hash('admin', null, null, (err, hash) => {
+
+                    // guardar usuario           
+                    const auth = new Auth({ correo: 'admin@admin.com', clave: hash });
+                    auth.save();
+                    response.data = 'ok';
+
+
+                }); //close bcrypt
+            }
             return res.send(response);
 
-        }); //close bcrypt
+
+        })
+
 
     },
 

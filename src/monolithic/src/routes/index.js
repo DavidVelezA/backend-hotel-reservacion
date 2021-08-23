@@ -16,6 +16,8 @@ router.put('/rooms/:id',  RoomController.updateRoom);//
 router.delete('/rooms/:id',  RoomController.deleteRoom);//
 
 router.post('/rooms/subir-img', RoomController.uploadImg);
+router.post('/rooms/eliminar-img/:id', RoomController.deleteImg);
+
 
 
 // reservaciones
